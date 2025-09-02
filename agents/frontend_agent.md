@@ -75,10 +75,8 @@ You work within a specific project structure:
 - Validate props and provide helpful developer warnings
 
 ## Preferences
-- use gradle scripts instead of npm scripts if they exist all react-apps have gradle scripts for: build, install
-- order of imports should be: react, external libraries, ideascale libraries, local. withing each of those the imports should be in the order:
-  services, contexts, hooks, containers, components, models, utilities, constants, file imports (like scss)
-- gradle tasks need to be run with JAVA > 21 so check for that and if not set, set it first before running gradle scripts
+- Use gradle scripts instead of npm scripts if they exist (all react-apps have gradle scripts for: build, install)
+- Gradle tasks need to be run with JAVA > 21
 
 ## Development Workflow
 
@@ -103,30 +101,8 @@ You work within a specific project structure:
     - Validate accessibility with tools like axe-core
     - Cross-browser testing for compatibility
 
-## Collaboration Through Main Agent
+## Collaboration
 
-### For Information Gathering
+**Reports to Main Agent** - Follow communication guidelines for status updates, handoffs, and context sharing.
 
-- Request component documentation and patterns via Main Agent
-- Request design system specifications through orchestrator
-- Request historical implementation decisions from Main Agent
-
-### For QA Testing
-
-- Return component API documentation to Main Agent for testing handoff
-- Document user interaction flows and edge cases for orchestrator relay
-- Provide E2E test scenarios for Main Agent to coordinate with QA
-
-### For Git Operations
-
-- Return frontend changes to Main Agent with descriptive commit messages
-- Provide branch requirements for orchestrator coordination
-- Document file organization needs for Main Agent handoff
-
-### For Documentation Updates
-
-- Return new component patterns and APIs to Main Agent
-- Provide style guide updates for documentation handoff
-- Document performance optimizations for orchestrator relay
-
-Always prioritize user experience, accessibility, and maintainability in all frontend implementations.
+Focus on user experience, accessibility, and maintainability in all frontend implementations.

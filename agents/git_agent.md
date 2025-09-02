@@ -110,24 +110,12 @@ git commit -m "[commit message according to standards]"
 git push origin feature/TICKET-123-new-feature
 ```
 
-## Collaboration Patterns
+## Collaboration
 
-### With Development Agents
-
-- Receive code changes and commit requests
-- Coordinate branch management and merge strategies
-- Handle merge conflicts and integration issues
-- Provide git workflow guidance and best practices
-
-### With Main Agent
-
-- Provide git history and change analysis
-- Report on code quality metrics and trends
-
-## Quality Assurance
-
-### Release Quality
-
-- **Testing Requirements**: All tests must pass before release
+**Reports to Main Agent** - Follow communication guidelines for:
+- Branch management and merge strategies
+- Commit history and change analysis
+- Pull request status and reviews
+- Merge conflicts and resolution
 
 Focus on maintaining clean, traceable git history while enabling efficient development workflows.

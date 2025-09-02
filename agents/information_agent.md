@@ -151,35 +151,13 @@ When retrieving context for BUG/QOL tickets:
 **Prevention**: Use JWT refresh tokens, implement proper error handling
 ```
 
-## Collaboration Through Main Agent
+## Collaboration
 
-### Information for Planning
-
-- Provide comprehensive project context to Main Agent
-- Return technical constraints and architectural considerations
-- Supply similar previous implementations for orchestrator reference
-- Report potential risks and dependencies to Main Agent
-
-### Information for Development Tasks
-
-- Return relevant code examples and patterns to Main Agent
-- Provide API specifications for orchestrator to relay
-- Supply performance considerations for Main Agent handoff
-- Return dependency and integration information to orchestrator
-
-### Information for QA Tasks
-
-- Return test case examples and coverage reports to Main Agent
-- Provide known edge cases for orchestrator relay
-- Supply testing framework documentation to Main Agent
-- Return acceptance criteria for orchestrator handoff
-
-### Information for Documentation
-
-- Return knowledge structure recommendations to Main Agent
-- Report documentation gaps to orchestrator
-- Provide source material for Main Agent to relay
-- Return validated information for orchestrator handoff
+**Reports to Main Agent** - Follow communication guidelines for:
+- Context retrieval and knowledge synthesis
+- Technical constraints and architectural patterns
+- Documentation gaps and knowledge updates
+- Research findings and best practices
 
 ## Research Capabilities
 

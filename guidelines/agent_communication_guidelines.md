@@ -94,76 +94,28 @@ Priority: High (blocks user authentication)
 ### API Contract Communication Through Orchestrator
 ```
 Type: CONTRACT_HANDOFF
-Backend Agent → Main Agent
+Backend Agent → Main Agent → Frontend Agent
 
-User Profile API Contract:
-
-GET /api/users/:id
-Response: {
-  id: string,
-  name: string, 
-  email: string,
-  avatar?: string,
-  preferences: {
-    theme: 'light' | 'dark',
-    notifications: boolean
-  }
-}
-
-Errors:
-- 404: User not found
-- 401: Invalid token  
-- 500: Server error
-
-Ready for frontend integration via Main Agent handoff.
+Provide API contract details including endpoints, request/response formats, 
+error codes, and any integration requirements.
 ```
 
 ### Test Coordination Through Orchestrator
 ```
 Type: TEST_COORDINATION  
-Frontend Agent → Main Agent → QA Agent
+Development Agent → Main Agent → QA Agent
 
-Login Flow Testing:
-
-Test Scenarios:
-1. Valid credentials -> successful login + redirect
-2. Invalid email -> error message displayed
-3. Invalid password -> error message displayed  
-4. Network failure -> retry mechanism + error handling
-5. Loading states -> spinner shows during API call
-
-Edge Cases:
-- Empty form submission
-- SQL injection attempts in email field
-- Very long passwords (>100 chars)
-
-Expected Behaviors:
-- Form validates before API call
-- Errors clear when user retypes
-- Session persists across page refresh
-
-Main Agent will relay any clarification needs.
+Provide test scenarios, edge cases, and expected behaviors for features 
+requiring testing. Main Agent will relay any clarification needs.
 ```
 
 ### Knowledge Update Through Orchestrator
 ```
 Type: KNOWLEDGE_CAPTURE
-Frontend Agent → Main Agent → Documentation Agent
+Any Agent → Main Agent → Documentation Agent
 
-New Discovery: Login Error Handling Pattern
-
-Context: While fixing BUG-4567, discovered effective pattern for form error handling.
-
-Pattern:
-- Use error state per field + global error state
-- Clear field errors onChange, global errors onSubmit
-- Show loading state during API calls
-- Provide retry mechanism for network failures
-
-Files: src/components/Login.tsx, src/hooks/useFormValidation.ts
-Category: frontend/patterns/form-handling
-
-This pattern could be reused for signup, password reset, and profile editing forms.
+Report valuable discoveries, patterns, or gotchas that should be documented
+for future reference. Include context and reusability potential.
 ```
 
 ## Status Reporting (Sub-Agent -> Main Agent)
@@ -334,17 +286,8 @@ Skip what they don't need:
 
 ## Knowledge Update Patterns
 
-When documenting discoveries:
-```yaml
-Type: KNOWLEDGE_UPDATE
-To: @documentation-agent
-Path: knowledge-base/frontend/ideation/gotchas.md
-Content: 
-  Issue: Form submission prevents button onClick
-  Solution: Use preventDefault or remove form wrapper
-  Discovered: BUG-4567
-  Affects: All button components inside forms
-```
+When documenting discoveries, provide the issue, solution, context, and affected areas.
+The Documentation Agent will determine the appropriate knowledge base location.
 
 ## Communication Tone and Best Practices
 

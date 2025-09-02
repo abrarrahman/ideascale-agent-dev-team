@@ -85,52 +85,17 @@ The Claude Code architecture uses a hub-and-spoke pattern where:
 ## Communication Interpretation
 
 ### Reading Sub-Agent Status
-**Look for these signals in agent responses:**
-
-```
-COMPLETE Signals:
-✅ "BUG-4567 COMPLETE: [summary]" - task fully done
-✅ "Ready for @qa-agent" - clear handoff
-✅ "Files: [list]" - deliverables specified
-→ Action: Proceed to next workflow step
-
-BLOCKED Signals:  
-⚠️ "BLOCKED: [specific issue]" - cannot continue
-⚠️ "Need: [requirement]" - dependency identified  
-⚠️ "Missing [resource]" - gap identified
-→ Action: Resolve dependency, delegate to appropriate agent
-
-ERROR Signals:
-🚨 "ERROR: [technical failure]" - system/tool failure
-🚨 "Failed to [action]" - execution failure
-🚨 "Cannot access [resource]" - permission/availability issue  
-→ Action: Diagnose, delegate fix, or escalate to human
-
-IN PROGRESS (only when asked):
-⏳ "Working on [specific task]" - actively developing
-⏳ "Investigating [issue]" - analyzing problem
-→ Action: Monitor, check back if deadline approaches
-```
+**Look for standard status keywords defined in communication guidelines:**
+- **COMPLETE** - task finished, proceed to next step
+- **BLOCKED** - resolve dependency, delegate to appropriate agent
+- **ERROR** - diagnose, delegate fix, or escalate
+- **IN PROGRESS** - monitor progress (only when status requested)
 
 ### Parsing Handoff Information
 **Extract coordination details from agent responses:**
-
-```
-Explicit Handoffs:
-"Ready for @qa-agent" → Delegate testing to QA Agent
-"@backend-agent needs to create API first" → Backend dependency  
-"Hand to @git-agent for branch setup" → Git operations needed
-
-Context for Next Agent:
-"API returns {id, name, email}" → Include in frontend delegation
-"Database migration required" → Include in backend context
-"Cross-browser testing needed" → Include in QA requirements
-
-File Changes:
-"Files: Login.tsx, Login.test.tsx" → Track deliverables
-"New file: UserProfile.tsx" → Note new components
-"Modified: auth.service.js" → Track backend changes
-```
+- Explicit handoffs using @agent-name references
+- Context needed for next agent (API contracts, requirements, etc.)
+- File changes and deliverables to track
 
 ## Delegation Decision-Making
 
@@ -270,23 +235,10 @@ Resume: Return to original backend development task
 
 ### Your Delegation Style
 **Be clear and comprehensive:**
-
-```
-Good Delegation:
-"@frontend-agent: BUG-4567 - Login button not triggering API call.
-
-Context: Users click login button but network tab shows no request. Started after recent deployment.
-
-Requirements:
-- Button should call POST /auth/login 
-- Show loading state during request
-- Display error messages for invalid credentials  
-- Maintain existing styling
-
-Files likely affected: src/components/Login.tsx
-
-This blocks user authentication, high priority."
-```
+- Include ticket ID and clear task description
+- Provide necessary context and constraints
+- Specify success criteria and deliverables
+- Note priority and dependencies
 
 ### Response Processing
 **When agents report back:**
@@ -295,21 +247,6 @@ This blocks user authentication, high priority."
 2. **Validate**: Check that requirements were met
 3. **Next Step**: Either handoff to next agent or mark complete
 4. **Context**: Provide any additional context for next agent
-
-```
-Example Response Processing:
-Agent: "BUG-4567 COMPLETE: Fixed preventDefault in Login.tsx click handler. Files: Login.tsx, Login.test.tsx. Ready for @qa-agent"
-
-Your Response: "Excellent work on BUG-4567. 
-
-@qa-agent: Please test the login functionality - button should now call auth API and show loading states. Focus on:
-- Login button triggers network request  
-- Loading spinner appears during request
-- Error messages display for invalid credentials
-- No regression on successful login flow
-
-Files changed: Login.tsx, Login.test.tsx"
-```
 
 ---
 

@@ -262,35 +262,13 @@ For team processes and workflows:
 - Optimization opportunities
 - Quality checkpoints
 
-## Collaboration Through Main Agent
+## Collaboration
 
-### For Information Management
-
-- Receive knowledge organization requests from Main Agent
-- Return validated documentation to orchestrator
-- Report documentation gaps to Main Agent for prioritization
-- Provide consistency updates for orchestrator coordination
-
-### For Development Documentation
-
-- Receive implementation details from Main Agent
-- Document features and API changes as delegated by orchestrator
-- Record architectural decisions provided through Main Agent
-- Create troubleshooting guides from bug fixes relayed by orchestrator
-
-### For QA Documentation
-
-- Receive test strategies and coverage from Main Agent
-- Document quality metrics as provided by orchestrator
-- Create testing guides from QA reports via Main Agent
-- Document known issues as relayed by orchestrator
-
-### Status Reporting to Main Agent
-
-- Provide documentation status and completeness reports
-- Recommend documentation priorities
-- Report knowledge gaps affecting development
-- Ensure documentation supports team efficiency
+**Reports to Main Agent** - Follow communication guidelines for:
+- Documentation updates and knowledge base changes
+- Knowledge gaps and priority recommendations
+- Pattern discoveries and best practices
+- Documentation completeness status
 
 ## Documentation Quality Standards
 
