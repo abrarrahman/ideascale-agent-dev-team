@@ -33,33 +33,33 @@ Content: Specific criteria to verify
 Expected Response: PASS/FAIL with evidence
 ```
 
-### Direct Agent Communications (Implementation)
-**Agents coordinate directly for specialized collaboration:**
+### Orchestrator-Mediated Coordination
+**All agent coordination flows through the Main Agent:**
 
 ```yaml
-# Frontend <-> Backend
-Type: CONTRACT_NEGOTIATION
-Content: API specifications, data formats, error handling
+# API Contract Sharing (Backend → Main Agent → Frontend)
+Type: CONTRACT_HANDOFF
+Flow: Backend completes API → Returns specs to Main Agent → Main Agent delegates to Frontend with specs
 
-# Development Agent <-> QA Agent
-Type: TEST_COLLABORATION  
-Content: Test scenarios, expected behaviors, edge cases
+# Test Collaboration (Development → Main Agent → QA)
+Type: TEST_COORDINATION  
+Flow: Dev completes feature → Returns to Main Agent → Main Agent delegates testing with context
 
-# Any Agent <-> Documentation Agent
-Type: KNOWLEDGE_UPDATE
-Content: New discoveries, architectural decisions, patterns
+# Knowledge Updates (Any Agent → Main Agent → Documentation)
+Type: KNOWLEDGE_CAPTURE
+Flow: Agent discovers pattern → Reports to Main Agent → Main Agent delegates documentation task
 ```
 
 ### Information Flow Rules
 ```yaml
 # Information Discovery
 When any agent discovers valuable information:
--> Share with Main Agent (for immediate task context)
--> Record with Documentation Agent (for future knowledge)
+→ Report to Main Agent (for immediate task context)
+→ Main Agent delegates to Documentation Agent (for future knowledge capture)
 
 # Context Requests
-Agent needs context -> Information Agent -> Returns relevant knowledge
-Agent needs current task context -> Main Agent -> Returns task-specific details
+Agent needs context → Request via Main Agent → Main Agent queries Information Agent → Returns knowledge
+Agent needs task context → Request to Main Agent → Main Agent provides task-specific details
 ```
 
 ## Core Principles
@@ -91,10 +91,10 @@ Deliverables: Fixed Login component + updated tests
 Priority: High (blocks user authentication)
 ```
 
-### Agent-to-Agent Contract Negotiation
+### API Contract Communication Through Orchestrator
 ```
-Type: CONTRACT_NEGOTIATION
-@backend-agent -> @frontend-agent
+Type: CONTRACT_HANDOFF
+Backend Agent → Main Agent
 
 User Profile API Contract:
 
@@ -115,13 +115,13 @@ Errors:
 - 401: Invalid token  
 - 500: Server error
 
-Ready for frontend integration. Questions?
+Ready for frontend integration via Main Agent handoff.
 ```
 
-### QA Test Collaboration
+### Test Coordination Through Orchestrator
 ```
-Type: TEST_COLLABORATION  
-@qa-agent <-> @frontend-agent
+Type: TEST_COORDINATION  
+Frontend Agent → Main Agent → QA Agent
 
 Login Flow Testing:
 
@@ -142,13 +142,13 @@ Expected Behaviors:
 - Errors clear when user retypes
 - Session persists across page refresh
 
-Need any clarification on expected UI behavior?
+Main Agent will relay any clarification needs.
 ```
 
-### Knowledge Update Flow
+### Knowledge Update Through Orchestrator
 ```
-Type: KNOWLEDGE_UPDATE
-@frontend-agent -> @documentation-agent
+Type: KNOWLEDGE_CAPTURE
+Frontend Agent → Main Agent → Documentation Agent
 
 New Discovery: Login Error Handling Pattern
 
@@ -196,7 +196,7 @@ Include:
 ### Context Discovery
 ```
 Type: CONTEXT_REQUEST
-Agent -> @information-agent
+Agent → Main Agent → Information Agent
 
 "Need context on user authentication patterns in the codebase.
 Working on BUG-4567 - login button issue.
@@ -279,7 +279,7 @@ Need: Specific error messages + proper error state management"
 
 ## Agent Addressing and Handoffs
 
-**Direct Addressing:** Use @agent-name for specific coordination needs
+**Agent References:** Use @agent-name to signal handoff needs to the orchestrator
 - `@qa-agent` - testing and validation
 - `@git-agent` - version control operations
 - `@frontend-agent` - UI/component work
@@ -290,14 +290,14 @@ Need: Specific error messages + proper error state management"
 **Handoff Patterns:**
 ```
 Ready Handoffs:
-"Ready for @qa-agent" - task complete, needs testing
-"@backend-agent ready for integration" - API available for frontend
-"Hand to @git-agent for deployment" - ready for release process
+"Ready for @qa-agent" - signals orchestrator to delegate testing
+"@backend-agent ready for integration" - signals orchestrator that API is ready for frontend handoff
+"Hand to @git-agent for deployment" - signals orchestrator to initiate release process
 
 Dependency Handoffs:  
-"Need @backend-agent to create API first" - blocking dependency
-"Waiting for @information-agent context on auth patterns" - info dependency
-"@qa-agent should review approach before implementation" - validation dependency
+"Need @backend-agent to create API first" - signals orchestrator about blocking dependency
+"Waiting for @information-agent context on auth patterns" - signals orchestrator about info need
+"@qa-agent should review approach before implementation" - signals orchestrator for validation
 ```
 
 ## Information Sharing Best Practices

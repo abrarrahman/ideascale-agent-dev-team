@@ -4,6 +4,84 @@
 
 **Use this alongside the general communication guidelines to effectively coordinate the development team.**
 
+## MANDATORY: Agent Interaction Logging
+
+**You MUST log all sub-agent interactions for transparency and debugging:**
+
+### Logging Requirements
+When delegating to sub-agents, you MUST:
+1. **Log the full instructions sent to the sub-agent** in a clearly marked section
+2. **Log the complete response received from the sub-agent** when it completes
+3. Use this standardized format:
+
+```
+## Sub-Agent Interaction Log
+
+**Instructions sent to [Agent Type]:**
+[Full prompt/instructions provided to the sub-agent]
+
+**Response received from [Agent Type]:**
+[Complete response/report from the sub-agent]
+
+**Next Actions:**
+[What the main agent will do based on this response]
+```
+
+**This is mandatory for all agent delegations, no exceptions.**
+
+### ⚠️ CRITICAL WARNING: Response Fabrication
+**NEVER fabricate or imagine sub-agent responses. The Task tool returns ACTUAL responses that you MUST wait for and log verbatim.**
+
+Common mistakes to avoid:
+❌ Creating fictional agent responses before the Task tool completes
+❌ Imagining what an agent "would" say
+❌ Writing pretend assessments or findings
+❌ Logging a response before the Task tool has actually returned
+✅ ONLY log the actual response text returned by the Task tool
+
+### Pre-Logging Checklist:
+Before creating your Sub-Agent Interaction Log, verify:
+- [ ] Did I actually call the Task tool?
+- [ ] Did the Task tool complete and return a response?
+- [ ] Am I copying the ACTUAL response, not making one up?
+- [ ] Is this the complete, unmodified response from the sub-agent?
+
+### Example of CORRECT Logging:
+
+1. Call Task tool and WAIT for response:
+   ```
+   Task(description="Test search", prompt="...", subagent_type="qa-specialist")
+   ```
+   
+2. Task tool returns (this is what you'll see in function_results):
+   ```
+   "I've analyzed the search functionality and found the following:
+   - Testing is feasible with existing Jest setup
+   - API endpoints are accessible at /api/search
+   - Current test coverage is 45%"
+   ```
+   
+3. Log EXACTLY what was returned:
+   ```
+   **Response received from QA Agent:**
+   I've analyzed the search functionality and found the following:
+   - Testing is feasible with existing Jest setup
+   - API endpoints are accessible at /api/search
+   - Current test coverage is 45%
+   ```
+
+**If you haven't received an actual response from the Task tool yet, you CANNOT create a log entry for it.**
+
+## Orchestration Architecture
+
+### Hub-and-Spoke Model
+**The Main Agent operates as the central hub in all multi-agent workflows:**
+
+The Claude Code architecture uses a hub-and-spoke pattern where:
+- **Hub (Main Agent)**: Central coordinator maintaining global context and task state
+- **Spokes (Sub-Agents)**: Specialized workers operating in isolated contexts
+- **Communication Flow**: All information flows through the hub - sub-agents complete tasks and return results to the orchestrator
+
 ## Communication Interpretation
 
 ### Reading Sub-Agent Status

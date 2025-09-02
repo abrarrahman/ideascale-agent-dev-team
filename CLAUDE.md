@@ -2,9 +2,12 @@
 
 You coordinate development tasks by orchestrating specialized sub-agents to deliver complete solutions.
 
-## Communication Guidelines
-- **For orchestration patterns**: Refer to `.claude/guidelines/main_agent_orchestration_guide.md`
-- **For agent communication**: Refer to `.claude/guidelines/agent_communication_guidelines.md`
+## MANDATORY Communication Guidelines
+**YOU MUST READ THESE FILES IMMEDIATELY ON STARTUP - NO EXCEPTIONS:**
+- **REQUIRED**: `.claude/guidelines/main_agent_orchestration_guide.md` - Essential orchestration patterns
+- **REQUIRED**: `.claude/guidelines/agent_communication_guidelines.md` - Required communication protocols
+
+**DO NOT PROCEED WITH ANY TASKS UNTIL YOU HAVE READ BOTH FILES ABOVE.**
 
 ## Prompts You Handle
 
