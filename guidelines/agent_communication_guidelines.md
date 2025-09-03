@@ -8,63 +8,67 @@
 ## Communication Structure
 
 ### Main Agent Communications (Orchestration)
+
 **Main Agent coordinates the workflow using these patterns:**
 
 ```yaml
 # Task Delegation
-To: [Agent]
+To: [ Agent ]
 Type: TASK_ASSIGNMENT
 Content:
   - Task description
-  - Success criteria  
+  - Success criteria
   - Context/constraints
   - Dependencies (wait for X before starting)
   - Expected deliverables
 
 # Status Requests  
-To: [Agent]
+To: [ Agent ]
 Type: STATUS_REQUEST
 Expected Response: Current progress, blockers, ETA
 
 # Quality Gate Validation
-To: [Agent] 
+To: [ Agent ]
 Type: VALIDATION_REQUEST
 Content: Specific criteria to verify
 Expected Response: PASS/FAIL with evidence
 ```
 
-### Direct Agent Communications (Implementation)
-**Agents coordinate directly for specialized collaboration:**
+### Orchestrator-Mediated Coordination
+
+**All agent coordination flows through the Main Agent:**
 
 ```yaml
-# Frontend <-> Backend
-Type: CONTRACT_NEGOTIATION
-Content: API specifications, data formats, error handling
+# API Contract Sharing (Backend → Main Agent → Frontend)
+Type: CONTRACT_HANDOFF
+Flow: Backend completes API → Returns specs to Main Agent → Main Agent delegates to Frontend with specs
 
-# Development Agent <-> QA Agent
-Type: TEST_COLLABORATION  
-Content: Test scenarios, expected behaviors, edge cases
+# Test Collaboration (Development → Main Agent → QA)
+Type: TEST_COORDINATION
+Flow: Dev completes feature → Returns to Main Agent → Main Agent delegates testing with context
 
-# Any Agent <-> Documentation Agent
-Type: KNOWLEDGE_UPDATE
-Content: New discoveries, architectural decisions, patterns
+# Knowledge Updates (Any Agent → Main Agent → Documentation)
+Type: KNOWLEDGE_CAPTURE
+Flow: Agent discovers pattern → Reports to Main Agent → Main Agent delegates documentation task
 ```
 
 ### Information Flow Rules
+
 ```yaml
 # Information Discovery
 When any agent discovers valuable information:
--> Share with Main Agent (for immediate task context)
--> Record with Documentation Agent (for future knowledge)
+  → Report to Main Agent (for immediate task context)
+  → Main Agent delegates to Documentation Agent (for future knowledge capture)
 
-# Context Requests
-Agent needs context -> Information Agent -> Returns relevant knowledge
-Agent needs current task context -> Main Agent -> Returns task-specific details
+  # Context Requests
+  Agent needs context → Request via Main Agent → Main Agent queries Information Agent → Returns knowledge
+  Agent needs task context → Request to Main Agent → Main Agent provides task-specific details
 ```
 
 ## Core Principles
 
 **Be Clear, Be Specific, Be Helpful**
+
 - Include ticket numbers: "Working on BUG-4567"
 - Name files you're changing: "Updated Login.tsx and Login.test.tsx"
 - Explain what you actually did: "Fixed preventDefault issue in click handler"
@@ -73,6 +77,7 @@ Agent needs current task context -> Main Agent -> Returns task-specific details
 ## Practical Communication Examples
 
 ### Main Agent Task Delegation
+
 ```
 Type: TASK_ASSIGNMENT
 To: @frontend-agent
@@ -91,10 +96,11 @@ Deliverables: Fixed Login component + updated tests
 Priority: High (blocks user authentication)
 ```
 
-### Agent-to-Agent Contract Negotiation
+### API Contract Communication Through Orchestrator
+
 ```
-Type: CONTRACT_NEGOTIATION
-@backend-agent -> @frontend-agent
+Type: CONTRACT_HANDOFF
+Backend Agent → Main Agent
 
 User Profile API Contract:
 
@@ -115,13 +121,14 @@ Errors:
 - 401: Invalid token  
 - 500: Server error
 
-Ready for frontend integration. Questions?
+Ready for frontend integration via Main Agent handoff.
 ```
 
-### QA Test Collaboration
+### Test Coordination Through Orchestrator
+
 ```
-Type: TEST_COLLABORATION  
-@qa-agent <-> @frontend-agent
+Type: TEST_COORDINATION  
+Frontend Agent → Main Agent → QA Agent
 
 Login Flow Testing:
 
@@ -142,13 +149,14 @@ Expected Behaviors:
 - Errors clear when user retypes
 - Session persists across page refresh
 
-Need any clarification on expected UI behavior?
+Main Agent will relay any clarification needs.
 ```
 
-### Knowledge Update Flow
+### Knowledge Update Through Orchestrator
+
 ```
-Type: KNOWLEDGE_UPDATE
-@frontend-agent -> @documentation-agent
+Type: KNOWLEDGE_CAPTURE
+Frontend Agent → Main Agent → Documentation Agent
 
 New Discovery: Login Error Handling Pattern
 
@@ -194,9 +202,10 @@ Include:
 ## Information Requests
 
 ### Context Discovery
+
 ```
 Type: CONTEXT_REQUEST
-Agent -> @information-agent
+Agent → Main Agent → Information Agent
 
 "Need context on user authentication patterns in the codebase.
 Working on BUG-4567 - login button issue.
@@ -206,6 +215,7 @@ Expected Response: Relevant documentation, code examples, established patterns
 ```
 
 ### Task Context
+
 ```
 Type: STATUS_REQUEST
 Main Agent -> Sub-Agent
@@ -219,6 +229,7 @@ Expected Response: Progress update, blockers if any, next steps
 ## Error Reporting and Escalation
 
 ### Blocked Tasks
+
 ```
 Type: BLOCKED_TASK
 Format: {ticket-id} BLOCKED: {specific issue} | Need: {what's needed}
@@ -232,6 +243,7 @@ Need: @backend-agent to confirm expected request/response format"
 ```
 
 ### System Errors
+
 ```
 Type: ERROR_REPORT  
 Format: {ticket-id} ERROR: {technical failure} | Impact: {BLOCKING/WARNING} | {resolution info}
@@ -245,6 +257,7 @@ Files: src/types/User.ts - missing import for UserPreferences type"
 ## Quality Gates and Validation
 
 ### Validation Requests (Main Agent -> Sub-Agent)
+
 ```
 Type: VALIDATION_REQUEST
 Content: Specific criteria to verify
@@ -259,6 +272,7 @@ Expected Response: PASS/FAIL with test evidence"
 ```
 
 ### Validation Responses (Sub-Agent -> Main Agent)
+
 ```
 Type: VALIDATION_COMPLETE
 Format: {ticket-id} {PASS/FAIL}: {test results} | {evidence/issues}
@@ -279,7 +293,8 @@ Need: Specific error messages + proper error state management"
 
 ## Agent Addressing and Handoffs
 
-**Direct Addressing:** Use @agent-name for specific coordination needs
+**Agent References:** Use @agent-name to signal handoff needs to the orchestrator
+
 - `@qa-agent` - testing and validation
 - `@git-agent` - version control operations
 - `@frontend-agent` - UI/component work
@@ -288,21 +303,23 @@ Need: Specific error messages + proper error state management"
 - `@documentation-agent` - knowledge base updates
 
 **Handoff Patterns:**
+
 ```
 Ready Handoffs:
-"Ready for @qa-agent" - task complete, needs testing
-"@backend-agent ready for integration" - API available for frontend
-"Hand to @git-agent for deployment" - ready for release process
+"Ready for @qa-agent" - signals orchestrator to delegate testing
+"@backend-agent ready for integration" - signals orchestrator that API is ready for frontend handoff
+"Hand to @git-agent for deployment" - signals orchestrator to initiate release process
 
 Dependency Handoffs:  
-"Need @backend-agent to create API first" - blocking dependency
-"Waiting for @information-agent context on auth patterns" - info dependency
-"@qa-agent should review approach before implementation" - validation dependency
+"Need @backend-agent to create API first" - signals orchestrator about blocking dependency
+"Waiting for @information-agent context on auth patterns" - signals orchestrator about info need
+"@qa-agent should review approach before implementation" - signals orchestrator for validation
 ```
 
 ## Information Sharing Best Practices
 
 ### Context for Next Agent
+
 ```
 Good Examples:
 ✅ "API endpoint ready: POST /auth/login - expects {email, password}, returns {token, user}"
@@ -316,18 +333,22 @@ Poor Examples:
 ```
 
 ### File References
+
 - Always use relative paths: `src/components/Login.tsx`
 - List all modified files: `Files: Login.tsx, Login.test.tsx, auth.service.js`
 - Distinguish new vs. updated: `New: UserProfile.tsx | Updated: Dashboard.tsx`
 
 ### Technical Integration Details
+
 Include what the next agent needs:
+
 - **API contracts**: Request/response formats, error codes
 - **Data structures**: Interface definitions, schema changes
 - **Behavior changes**: New features, modified workflows
 - **Dependencies**: Required imports, configuration changes
 
 Skip what they don't need:
+
 - Implementation details that don't affect integration
 - Internal refactoring that doesn't change external behavior
 - Debugging steps that led to the solution
@@ -335,11 +356,12 @@ Skip what they don't need:
 ## Knowledge Update Patterns
 
 When documenting discoveries:
+
 ```yaml
 Type: KNOWLEDGE_UPDATE
 To: @documentation-agent
 Path: knowledge-base/frontend/ideation/gotchas.md
-Content: 
+Content:
   Issue: Form submission prevents button onClick
   Solution: Use preventDefault or remove form wrapper
   Discovered: BUG-4567
@@ -355,6 +377,7 @@ Content:
 - **Collaborative** - recognize interdependencies and shared goals
 
 **Status Keywords** (for consistent parsing):
+
 - **COMPLETE** - task finished successfully
 - **BLOCKED** - cannot continue without external help
 - **ERROR** - something failed, needs investigation
@@ -363,4 +386,5 @@ Content:
 
 ---
 
-**Remember:** Effective communication makes the entire development team more productive. When in doubt, err on the side of being more specific and helpful to your teammates.
+**Remember:** Effective communication makes the entire development team more productive. When in doubt, err on the side
+of being more specific and helpful to your teammates.
