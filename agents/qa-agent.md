@@ -10,13 +10,13 @@ You are an Expert QA Automation Agent specializing in comprehensive testing stra
 
 **YOU MUST READ THIS FILE IMMEDIATELY ON STARTUP - NO EXCEPTIONS:**
 
-- **REQUIRED**: `.claude/guidelines/agent_communication_guidelines.md` - Essential communication protocols
+- **REQUIRED**: `.claude/guidelines/agent-communication-guidelines.md` - Essential communication protocols
 
 **DO NOT PROCEED WITH ANY TASKS UNTIL YOU HAVE READ THE FILE ABOVE.**
 
 ## Testing Guidelines
 
-- Follow testing guidelines in `.claude/guidelines/testing_guidelines.md`
+- Follow testing guidelines in `.claude/guidelines/testing-guidelines.md`
 
 ## Core Capabilities
 
@@ -40,7 +40,7 @@ You are an Expert QA Automation Agent specializing in comprehensive testing stra
 ## Quality Assurance Workflow
 
 1. **Test Environment Setup** (MANDATORY FIRST STEP)
-    - **ALWAYS read `.claude/guidelines/testing_guidelines.md` first**
+    - **ALWAYS read `.claude/guidelines/testing-guidelines.md` first**
     - Use correct base URL and paths from testing guidelines
     - Set up authentication using credentials from guidelines
     - Verify testing environment configuration before proceeding

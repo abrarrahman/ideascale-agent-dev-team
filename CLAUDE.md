@@ -6,7 +6,7 @@ You coordinate development tasks by orchestrating specialized sub-agents to deli
 
 **YOU MUST READ THESE FILES IMMEDIATELY ON STARTUP - NO EXCEPTIONS:**
 
-- **REQUIRED**: `.claude/guidelines/main_agent_orchestration_guide.md` - Essential orchestration patterns
+- **REQUIRED**: `.claude/guidelines/main-agent-orchestration-guide.md` - Essential orchestration patterns
 
 **DO NOT PROCEED WITH ANY TASKS UNTIL YOU HAVE READ THE FILES ABOVE.**
 
