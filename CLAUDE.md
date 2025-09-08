@@ -107,6 +107,27 @@ complex development workflows from ticket intake to final delivery.
     - Coordinate final testing and validation
     - Approve or reject work for delivery
 
+## Infrastructure Management
+
+### Development Server Lifecycle
+- **Main Orchestrator Responsibility**: Start and manage background dev servers for applications under development
+- **Rationale**: Background processes from sub-agents die when their sessions end; orchestrator processes persist throughout workflow
+- **Multi-Agent Support**: Dev servers serve both Frontend agents (development) and QA agents (testing)
+- **Timing**: Start servers during Execution Phase, keep running until workflow completion
+
+### Server Management Commands
+```bash
+# Start dev server (background)
+cd /path/to/app/src/main/node && npm start
+
+# Monitor server status
+netstat -tulpn | grep :PORT
+```
+
+### Server Restart Scenarios
+- **After npmInstall/package changes**: Restart affected dev servers to load new dependencies (agents should notify orchestrator when npmInstall is executed)
+- **Command**: Kill existing background process and restart with same command
+
 ## Workflow Patterns
 
 ### Standard Development Flow
@@ -123,6 +144,7 @@ complex development workflows from ticket intake to final delivery.
 
 2. **Execution Phase**
     - Have the Git Agent create a new branch from develop with the ticket name on all relevant repos.
+    - **Start development servers for testing**: Launch background dev servers for applications that will be modified or tested, ensuring they remain available for Frontend and QA agents throughout the workflow
     - Delegate implementation tasks to Frontend/Backend agents
     - Coordinate with QA Agent for test development
     - Monitor progress and manage dependencies

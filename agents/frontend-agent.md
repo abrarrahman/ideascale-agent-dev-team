@@ -40,10 +40,14 @@ You work within a specific project structure:
 
 ## Local Development Setup
 
-- When working on a coding task, keep the app running locally.
-    * run npmInstall if any packages change
-    * run npm start from the specific app directory (e.g. `idea-portfolio/app/src/main/node/`) to start the development
-      server
+- Development servers are managed by the Main Orchestrator Agent
+- Applications will be available at their standard URLs during development tasks
+- Focus on implementation work while infrastructure is managed centrally
+    * run npmInstall if any packages change and notify Main Orchestrator so dev servers can be restarted
+    * development servers will be started and maintained by the orchestrator
+
+**IMPORTANT: Library Changes**
+- **When modifying `@ideascale/commons` or `@ideascale/ui` libraries, you MUST read `.claude/guidelines/library-testing-guidelines.md` for mandatory local testing procedures before QA handoff.**
 
 ## Serena Usage
 
@@ -96,8 +100,10 @@ You work within a specific project structure:
 - order of imports should be: react, external libraries, ideascale libraries, local. withing each of those the imports
   should be in the order:
   services, contexts, hooks, containers, components, models, utilities, constants, file imports (like scss)
-- gradle tasks need to be run with JAVA > 21 so check for that and if not set, set it first before running gradle
-  scripts
+- **CRITICAL: Java Environment** - ALL gradle tasks require Java 21+. Before ANY gradle command:
+  - Check: `echo $JAVA_HOME`
+  - If not Java 21+, set: `export JAVA_HOME=/path/to/java21`
+  - Verify: `java -version` shows Java 21 or higher
 
 ## Development Workflow
 

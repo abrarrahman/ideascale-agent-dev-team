@@ -2,8 +2,6 @@
 
 *Specialized guidance for the Main Agent on interpreting communications and orchestrating multi-agent workflows.*
 
-**Use this alongside the general communication guidelines to effectively coordinate the development team.**
-
 ## MANDATORY: Agent Interaction Logging
 
 **You MUST log all sub-agent interactions for transparency and debugging:**
