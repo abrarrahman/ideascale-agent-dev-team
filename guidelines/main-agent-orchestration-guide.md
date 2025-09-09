@@ -260,6 +260,30 @@ Resume: Return to original backend development task
 
 ## Quality Orchestration
 
+### MANDATORY: Pre-Commit Validation Protocol
+
+**ABSOLUTE REQUIREMENT: These must be validated IN ORDER before ANY Git operations:**
+
+**1. QA Validation (HARD BLOCKER):**
+- [ ] QA agent provided actual browser test evidence (screenshot file paths)
+- [ ] QA agent confirmed acceptance criteria met with real testing
+- [ ] QA agent verified no regressions through actual browser validation
+- [ ] **If QA cannot test or provides code-based conclusions → HALT and resolve**
+
+**2. Build Verification (HARD BLOCKER):**
+- [ ] All applications build successfully without errors
+- [ ] No TypeScript compilation errors
+- [ ] No gradle build failures
+
+**3. Documentation Updates:**
+- [ ] Knowledge base updated with discoveries
+- [ ] Architectural decisions documented
+
+**CRITICAL ENFORCEMENT:**
+- **If ANY checkbox above is unchecked → DO NOT PROCEED to commits/PRs**
+- **No exceptions, no shortcuts, no "will fix later"**
+- **Agent output is probabilistic - validation must be deterministic**
+
 ### Validation Checkpoints
 
 **Ensure quality gates before handoffs:**
@@ -337,6 +361,37 @@ Your Response: "Excellent work on BUG-4567.
 
 Files changed: Login.tsx, Login.test.tsx"
 ```
+
+## Development Server Management Boundaries
+
+**CRITICAL: Main Agent Server Management Scope**
+
+**MAIN AGENT RESPONSIBILITIES (ONLY):**
+- Start/stop/restart development servers in background
+- Monitor server status and health
+- Handle server restarts after npmInstall notifications
+
+**MAIN AGENT DOES NOT:**
+- Build or publish libraries (`./gradlew local_publish`, `npm pack`)
+- Install packages in consuming apps (`./gradlew npmInstall`)
+- Modify build.gradle.kts versions
+- Handle library integration workflows
+
+**LIBRARY WORKFLOW (Frontend Agent Responsibility):**
+1. Frontend agent modifies library code
+2. Frontend agent runs `./gradlew local_publish` 
+3. Frontend agent updates consuming app `build.gradle.kts` to "0.0.0-local"
+4. Frontend agent runs `./gradlew npmInstall`
+5. Frontend agent notifies Main Agent: "npmInstall completed, please restart dev server"
+6. **ONLY THEN** Main Agent restarts the dev server
+
+**QA Testing Environment Clarification**
+
+**IMPORTANT: QA Testing on ideas.ideascale.me IS Local Testing**
+- QA agents correctly use `ideas.ideascale.me` URLs (per testing guidelines)
+- Host mapping redirects this URL to the local dev server (localhost:3886)
+- This IS testing the local development implementation, NOT production
+- Main Agent should NOT assume QA is testing production when seeing ideas.ideascale.me URLs
 
 ---
 

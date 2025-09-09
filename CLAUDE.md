@@ -118,7 +118,7 @@ complex development workflows from ticket intake to final delivery.
 ### Server Management Commands
 ```bash
 # Start dev server (background)
-cd /path/to/app/src/main/node && npm start
+cd {path to app}/app/src/main/node && npm start
 
 # Monitor server status
 netstat -tulpn | grep :PORT
@@ -127,6 +127,10 @@ netstat -tulpn | grep :PORT
 ### Server Restart Scenarios
 - **After npmInstall/package changes**: Restart affected dev servers to load new dependencies (agents should notify orchestrator when npmInstall is executed)
 - **Command**: Kill existing background process and restart with same command
+
+### Library Development Workflow
+
+**IMPORTANT**: See `main-agent-orchestration-guide.md` for complete library development boundaries and QA testing environment details.
 
 ## Workflow Patterns
 
@@ -167,6 +171,31 @@ netstat -tulpn | grep :PORT
     - Approve final deliverables
     - Provide comprehensive status reporting
 
+### QA Testing Delegation Protocol
+
+**When delegating to QA Agent:**
+- **NEVER specify localhost URLs** - QA must read testing guidelines for correct environment
+- **Application context only**: Specify which app (ideation/idea-portfolio) and feature being tested
+- **Requirements focus**: Provide acceptance criteria and testing scope, not environment details
+- **Evidence verification**: Always verify QA provides file paths to actual screenshots and evidence
+
+**Example QA Delegation:**
+```
+**Application**: idea-portfolio
+**Feature**: Email modal character validation 
+**Testing Scope**: Character count validation for subject field
+**Acceptance Criteria**: [list specific criteria to validate]
+
+**Environment Setup**: Read `.claude/guidelines/testing-guidelines.md` for correct URLs and credentials.
+```
+
+**Before accepting QA results:**
+1. Verify screenshot file paths exist and are accessible
+2. Check evidence matches claimed testing scope  
+3. Validate URLs used match testing guidelines
+4. Confirm no fabricated results (all claims have evidence)
+5. If evidence is missing → Reject results and request proper testing
+
 ## Communication Protocols
 
 - Always provide clear, actionable task descriptions to sub-agents
@@ -175,15 +204,26 @@ netstat -tulpn | grep :PORT
 - Escalate decisions that require human input
 - Maintain audit trail of all decisions and handoffs
 
-## Quality Gates
+## MANDATORY: Quality Gates Checklist
 
-Before marking any task complete, ensure:
+**HARD STOP - These must be COMPLETED in sequential order before ANY commits, PRs, or task completion:**
 
-- [ ] All acceptance criteria validated
-- [ ] Tests written and passing
-- [ ] Documentation updated
-- [ ] No regressions introduced
-- [ ] Performance impact assessed
+**CRITICAL VALIDATION PHASE:**
+1. [ ] **QA Evidence Received**: File paths to screenshots showing acceptance criteria met
+2. [ ] **Test Results Validated**: QA agent confirms all requirements satisfied with browser evidence  
+3. [ ] **No Regressions Confirmed**: QA agent verified no broken functionality with actual testing
+4. [ ] **Builds Succeed**: All applications build without errors
+5. [ ] **Documentation Updated**: Knowledge base updated with findings
+
+**VIOLATION CONSEQUENCES:**
+- If ANY step above is incomplete → **DO NOT PROCEED** to commits/PRs
+- If QA provides non-browser evidence → **REJECT** and request proper testing
+- If QA cannot test → **RESOLVE BLOCKERS** before proceeding
+- If builds fail → **FIX ERRORS** before proceeding
+
+**Only after ALL checkboxes are complete → Proceed to Git operations**
+
+**REMEMBER: Output from Agents is Probabilistic - Validation is Deterministic**
 
 ## Error Handling
 

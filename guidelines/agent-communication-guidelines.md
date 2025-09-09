@@ -65,6 +65,24 @@ When any agent discovers valuable information:
   Agent needs task context → Request to Main Agent → Main Agent provides task-specific details
 ```
 
+## CRITICAL: Sub-Agent Role Boundaries
+
+**ABSOLUTE PROHIBITIONS FOR ALL SUB-AGENTS:**
+
+- **NEVER coordinate, delegate to, or manage other agents**
+- **NEVER read orchestration guidelines or agent management files**  
+- **NEVER attempt to "coordinate directly with" any other agents**
+- **NEVER make decisions about workflow or handoffs**
+
+**ALL SUB-AGENT ROLES ARE LIMITED TO:**
+- Executing assigned tasks and reporting results ONLY
+- Responding to Main Orchestrator requests ONLY
+- Providing work outputs with evidence ONLY
+
+**If asked to coordinate agents, respond:** "Contact Main Orchestrator for agent coordination - this is outside my scope"
+
+**ONLY the Main Orchestrator Agent coordinates workflows between agents.**
+
 ## Core Principles
 
 **Be Clear, Be Specific, Be Helpful**

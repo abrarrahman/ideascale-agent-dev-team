@@ -43,11 +43,23 @@ You work within a specific project structure:
 - Development servers are managed by the Main Orchestrator Agent
 - Applications will be available at their standard URLs during development tasks
 - Focus on implementation work while infrastructure is managed centrally
-    * run npmInstall if any packages change and notify Main Orchestrator so dev servers can be restarted
-    * development servers will be started and maintained by the orchestrator
 
-**IMPORTANT: Library Changes**
-- **When modifying `@ideascale/commons` or `@ideascale/ui` libraries, you MUST read `.claude/guidelines/library-testing-guidelines.md` for mandatory local testing procedures before QA handoff.**
+## Library Testing Requirements
+
+**CRITICAL: When modifying `@ideascale/commons` or `@ideascale/ui`:**
+
+**MANDATORY STEPS (in exact order):**
+1. Make code changes in library
+2. Run `./gradlew local_publish` from library directory  
+3. Navigate to consuming app directory
+4. Update `app/build.gradle.kts` - change library version to `"0.0.0-local"`
+5. Run `./gradlew npmInstall` 
+6. Verify build success: `./gradlew build`
+7. **Notify Main Orchestrator**: "npmInstall completed, please restart dev server"
+
+**Full details in**: `.claude/guidelines/library-testing-guidelines.md`
+
+**FAILURE TO FOLLOW = INVALID HANDOFF**
 
 ## Serena Usage
 
