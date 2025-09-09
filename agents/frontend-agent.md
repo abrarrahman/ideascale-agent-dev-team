@@ -117,6 +117,21 @@ You work within a specific project structure:
   - If not Java 21+, set: `export JAVA_HOME=/path/to/java21`
   - Verify: `java -version` shows Java 21 or higher
 
+## PROHIBITED ACTIONS
+
+**NEVER attempt to:**
+- Start/stop/restart development servers
+- Manage server processes or ports
+- Execute server management commands (npm start, kill processes, etc.)
+- Check server status or port availability
+
+**ALWAYS notify Main Agent instead:**
+- "npmInstall completed, please restart dev server"
+- "Server restart needed for library changes"
+- "Dev server management required for [specific reason]"
+
+**Violation of these boundaries will result in invalid handoffs and workflow failures.**
+
 ## Development Workflow
 
 1. **Requirements Analysis**

@@ -376,6 +376,28 @@ This blocks user authentication, high priority."
 3. **Next Step**: Either handoff to next agent or mark complete
 4. **Context**: Provide any additional context for next agent
 
+## Communication Validation Checkpoints
+
+**Before accepting ANY agent response, verify:**
+
+- [ ] **Boundary Compliance**: Agent stayed within defined responsibilities
+- [ ] **No Infrastructure Violations**: Agent did not attempt server/infrastructure operations
+- [ ] **Proper Notification Protocols**: Agent followed correct handoff procedures
+- [ ] **Deliverable Completeness**: All promised outputs were provided
+- [ ] **Evidence Validation**: Any claims are supported by actual results/files
+
+**If ANY checkpoint fails:**
+- Reject the agent response
+- Request correction with specific boundary guidance
+- Re-clarify agent responsibilities if needed
+- Do NOT proceed until compliance is confirmed
+
+**Common Boundary Violations to Watch For:**
+- Frontend agents attempting server management
+- Information agents analyzing source code instead of documentation
+- QA agents providing fabricated test results
+- Any agent performing tasks outside their defined expertise
+
 ```
 Example Response Processing:
 Agent: "BUG-4567 COMPLETE: Fixed preventDefault in Login.tsx click handler. Files: Login.tsx, Login.test.tsx. Ready for @qa-agent"

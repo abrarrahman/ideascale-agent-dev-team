@@ -115,6 +115,19 @@ complex development workflows from ticket intake to final delivery.
 - **Multi-Agent Support**: Dev servers serve both Frontend agents (development) and QA agents (testing)
 - **Timing**: Start servers during Planning Phase for QA current behavior testing, keep running throughout entire workflow until completion
 
+## Server Management - Main Agent ONLY
+
+**YOU manage all dev servers - never delegate this to sub-agents:**
+- Start/stop/restart development servers yourself
+- Monitor server status and health
+- Handle server restarts after npmInstall notifications
+- Manage background processes and port allocation
+
+**When agents report "npmInstall completed" → YOU restart the server immediately**
+- Sub-agents should NEVER attempt server operations
+- Always perform server management tasks yourself
+- Do not instruct other agents to handle infrastructure
+
 ### Server Management Commands
 ```bash
 # Start dev server (background)
