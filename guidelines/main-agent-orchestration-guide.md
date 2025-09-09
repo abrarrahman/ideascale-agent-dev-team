@@ -76,6 +76,35 @@ Before creating your Sub-Agent Interaction Log, verify:
 
 **If you haven't received an actual response from the Task tool yet, you CANNOT create a log entry for it.**
 
+## CRITICAL: Agent Responsibility Boundaries
+
+### Information Agent - PROHIBITED Requests
+**NEVER ask Information Agent for:**
+- Code analysis or code reading
+- Function/class/component implementations
+- API endpoint details from actual source code
+- Database schema from code files
+- Component structure or architecture from codebase
+- File structure or code organization
+- Any information that requires reading source code files
+- Implementation details discoverable through code analysis
+
+### Frontend/Backend Agents - Codebase Analysis
+**ALWAYS delegate to Frontend/Backend agents for:**
+- Code structure analysis
+- Implementation details
+- API contract discovery from source code
+- Component relationships
+- Database schema from actual code files
+- File organization and architecture
+- Any information requiring source code reading
+- Technical implementation analysis
+
+### Information Delegation Rules
+- **Information Agent**: ONLY for documented knowledge base content, external documentation, web research
+- **Frontend/Backend Agents**: ONLY for codebase analysis, code reading, implementation details
+- **Never ask Information Agent to analyze source code - this violates agent boundaries**
+
 ## Orchestration Architecture
 
 ### Hub-and-Spoke Model
@@ -163,8 +192,8 @@ Analysis:
 - Documentation updates needed throughout
 
 Delegation Order:
-1. @information-agent: "Research existing user data structures"
-2. @backend-agent: "Create user profile API endpoints" 
+1. @backend-agent: "Analyze existing user data structures and create profile API endpoints"
+2. @information-agent: "Research UI/UX patterns for profile editing from knowledge base" 
 3. @frontend-agent: "Build profile editing UI" (after API ready)
 4. @qa-agent: "Test complete user profile flow" (after both ready)
 5. @documentation-agent: "Update user guide with profile editing"
@@ -370,6 +399,8 @@ Files changed: Login.tsx, Login.test.tsx"
 - Start/stop/restart development servers in background
 - Monitor server status and health
 - Handle server restarts after npmInstall notifications
+- **Start servers in Planning Phase for QA current behavior testing**
+- **Ensure servers remain running throughout entire workflow**
 
 **MAIN AGENT DOES NOT:**
 - Build or publish libraries (`./gradlew local_publish`, `npm pack`)

@@ -83,6 +83,21 @@ When any agent discovers valuable information:
 
 **ONLY the Main Orchestrator Agent coordinates workflows between agents.**
 
+### CRITICAL: Information Agent Source Code Prohibition
+
+**INFORMATION AGENT ABSOLUTE PROHIBITIONS:**
+- **NEVER analyze, read, or provide information about source code files**
+- **NEVER access directories outside `.claude/knowledge-base/`**
+- **NEVER provide technical implementation details discoverable through code**
+
+**If Main Agent asks Information Agent for codebase analysis:**
+- **Information Agent MUST respond:** "Codebase analysis is handled by Frontend/Backend agents - please delegate to them"
+
+**MAIN AGENT DELEGATION RULES:**
+- **Information Agent**: ONLY documented knowledge base + external web research
+- **Frontend/Backend Agents**: ONLY codebase analysis + implementation details
+- **Violation of these boundaries is a critical error**
+
 ## Core Principles
 
 **Be Clear, Be Specific, Be Helpful**

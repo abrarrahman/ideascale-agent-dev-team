@@ -113,7 +113,7 @@ complex development workflows from ticket intake to final delivery.
 - **Main Orchestrator Responsibility**: Start and manage background dev servers for applications under development
 - **Rationale**: Background processes from sub-agents die when their sessions end; orchestrator processes persist throughout workflow
 - **Multi-Agent Support**: Dev servers serve both Frontend agents (development) and QA agents (testing)
-- **Timing**: Start servers during Execution Phase, keep running until workflow completion
+- **Timing**: Start servers during Planning Phase for QA current behavior testing, keep running throughout entire workflow until completion
 
 ### Server Management Commands
 ```bash
@@ -139,9 +139,10 @@ netstat -tulpn | grep :PORT
 1. **Planning Phase**
     - Analyze ticket requirements
     - Have the git agent ensure the relevant repo is on the latest develop branch.
-    - Query Information Agent to check for relevant context from the knowledge base.
-    - Query Frontend/Backend agents for codebase insights if needed.
-    - If any information from external sources on the web is needed, have the Information Agent retrieve it.
+    - **Start development servers for current behavior testing**: Launch background dev servers so QA Agent can test existing functionality before implementation begins
+    - **Information Agent**: ONLY query for documented knowledge base content and external web research
+    - **Frontend/Backend Agents**: ONLY delegate for codebase analysis, code structure, and implementation details
+    - **NEVER ask Information Agent to analyze source code - this violates agent boundaries**
     - Collaborate with QA Agent to test current behavior and plan test cases.
     - Create detailed task breakdown
     - Set quality gates and success criteria
