@@ -2,8 +2,6 @@
 
 *Specialized guidance for the Main Agent on interpreting communications and orchestrating multi-agent workflows.*
 
-**Use this alongside the general communication guidelines to effectively coordinate the development team.**
-
 ## MANDATORY: Agent Interaction Logging
 
 **You MUST log all sub-agent interactions for transparency and debugging:**
@@ -77,6 +75,35 @@ Before creating your Sub-Agent Interaction Log, verify:
    ```
 
 **If you haven't received an actual response from the Task tool yet, you CANNOT create a log entry for it.**
+
+## CRITICAL: Agent Responsibility Boundaries
+
+### Information Agent - PROHIBITED Requests
+**NEVER ask Information Agent for:**
+- Code analysis or code reading
+- Function/class/component implementations
+- API endpoint details from actual source code
+- Database schema from code files
+- Component structure or architecture from codebase
+- File structure or code organization
+- Any information that requires reading source code files
+- Implementation details discoverable through code analysis
+
+### Frontend/Backend Agents - Codebase Analysis
+**ALWAYS delegate to Frontend/Backend agents for:**
+- Code structure analysis
+- Implementation details
+- API contract discovery from source code
+- Component relationships
+- Database schema from actual code files
+- File organization and architecture
+- Any information requiring source code reading
+- Technical implementation analysis
+
+### Information Delegation Rules
+- **Information Agent**: ONLY for documented knowledge base content, external documentation, web research
+- **Frontend/Backend Agents**: ONLY for codebase analysis, code reading, implementation details
+- **Never ask Information Agent to analyze source code - this violates agent boundaries**
 
 ## Orchestration Architecture
 
@@ -165,8 +192,8 @@ Analysis:
 - Documentation updates needed throughout
 
 Delegation Order:
-1. @information-agent: "Research existing user data structures"
-2. @backend-agent: "Create user profile API endpoints" 
+1. @backend-agent: "Analyze existing user data structures and create profile API endpoints"
+2. @information-agent: "Research UI/UX patterns for profile editing from knowledge base" 
 3. @frontend-agent: "Build profile editing UI" (after API ready)
 4. @qa-agent: "Test complete user profile flow" (after both ready)
 5. @documentation-agent: "Update user guide with profile editing"
@@ -262,6 +289,30 @@ Resume: Return to original backend development task
 
 ## Quality Orchestration
 
+### MANDATORY: Pre-Commit Validation Protocol
+
+**ABSOLUTE REQUIREMENT: These must be validated IN ORDER before ANY Git operations:**
+
+**1. QA Validation (HARD BLOCKER):**
+- [ ] QA agent provided actual browser test evidence (screenshot file paths)
+- [ ] QA agent confirmed acceptance criteria met with real testing
+- [ ] QA agent verified no regressions through actual browser validation
+- [ ] **If QA cannot test or provides code-based conclusions → HALT and resolve**
+
+**2. Build Verification (HARD BLOCKER):**
+- [ ] All applications build successfully without errors
+- [ ] No TypeScript compilation errors
+- [ ] No gradle build failures
+
+**3. Documentation Updates:**
+- [ ] Knowledge base updated with discoveries
+- [ ] Architectural decisions documented
+
+**CRITICAL ENFORCEMENT:**
+- **If ANY checkbox above is unchecked → DO NOT PROCEED to commits/PRs**
+- **No exceptions, no shortcuts, no "will fix later"**
+- **Agent output is probabilistic - validation must be deterministic**
+
 ### Validation Checkpoints
 
 **Ensure quality gates before handoffs:**
@@ -325,6 +376,28 @@ This blocks user authentication, high priority."
 3. **Next Step**: Either handoff to next agent or mark complete
 4. **Context**: Provide any additional context for next agent
 
+## Communication Validation Checkpoints
+
+**Before accepting ANY agent response, verify:**
+
+- [ ] **Boundary Compliance**: Agent stayed within defined responsibilities
+- [ ] **No Infrastructure Violations**: Agent did not attempt server/infrastructure operations
+- [ ] **Proper Notification Protocols**: Agent followed correct handoff procedures
+- [ ] **Deliverable Completeness**: All promised outputs were provided
+- [ ] **Evidence Validation**: Any claims are supported by actual results/files
+
+**If ANY checkpoint fails:**
+- Reject the agent response
+- Request correction with specific boundary guidance
+- Re-clarify agent responsibilities if needed
+- Do NOT proceed until compliance is confirmed
+
+**Common Boundary Violations to Watch For:**
+- Frontend agents attempting server management
+- Information agents analyzing source code instead of documentation
+- QA agents providing fabricated test results
+- Any agent performing tasks outside their defined expertise
+
 ```
 Example Response Processing:
 Agent: "BUG-4567 COMPLETE: Fixed preventDefault in Login.tsx click handler. Files: Login.tsx, Login.test.tsx. Ready for @qa-agent"
@@ -339,6 +412,39 @@ Your Response: "Excellent work on BUG-4567.
 
 Files changed: Login.tsx, Login.test.tsx"
 ```
+
+## Development Server Management Boundaries
+
+**CRITICAL: Main Agent Server Management Scope**
+
+**MAIN AGENT RESPONSIBILITIES (ONLY):**
+- Start/stop/restart development servers in background
+- Monitor server status and health
+- Handle server restarts after npmInstall notifications
+- **Start servers in Planning Phase for QA current behavior testing**
+- **Ensure servers remain running throughout entire workflow**
+
+**MAIN AGENT DOES NOT:**
+- Build or publish libraries (`./gradlew local_publish`, `npm pack`)
+- Install packages in consuming apps (`./gradlew npmInstall`)
+- Modify build.gradle.kts versions
+- Handle library integration workflows
+
+**LIBRARY WORKFLOW (Frontend Agent Responsibility):**
+1. Frontend agent modifies library code
+2. Frontend agent runs `./gradlew local_publish` 
+3. Frontend agent updates consuming app `build.gradle.kts` to "0.0.0-local"
+4. Frontend agent runs `./gradlew npmInstall`
+5. Frontend agent notifies Main Agent: "npmInstall completed, please restart dev server"
+6. **ONLY THEN** Main Agent restarts the dev server
+
+**QA Testing Environment Clarification**
+
+**IMPORTANT: QA Testing on ideas.ideascale.me IS Local Testing**
+- QA agents correctly use `ideas.ideascale.me` URLs (per testing guidelines)
+- Host mapping redirects this URL to the local dev server (localhost:3886)
+- This IS testing the local development implementation, NOT production
+- Main Agent should NOT assume QA is testing production when seeing ideas.ideascale.me URLs
 
 ---
 

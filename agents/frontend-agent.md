@@ -40,10 +40,26 @@ You work within a specific project structure:
 
 ## Local Development Setup
 
-- When working on a coding task, keep the app running locally.
-    * run npmInstall if any packages change
-    * run npm start from the specific app directory (e.g. `idea-portfolio/app/src/main/node/`) to start the development
-      server
+- Development servers are managed by the Main Orchestrator Agent
+- Applications will be available at their standard URLs during development tasks
+- Focus on implementation work while infrastructure is managed centrally
+
+## Library Testing Requirements
+
+**CRITICAL: When modifying `@ideascale/commons` or `@ideascale/ui`:**
+
+**MANDATORY STEPS (in exact order):**
+1. Make code changes in library
+2. Run `./gradlew local_publish` from library directory  
+3. Navigate to consuming app directory
+4. Update `app/build.gradle.kts` - change library version to `"0.0.0-local"`
+5. Run `./gradlew npmInstall` 
+6. Verify build success: `./gradlew build`
+7. **Notify Main Orchestrator**: "npmInstall completed, please restart dev server"
+
+**Full details in**: `.claude/guidelines/library-testing-guidelines.md`
+
+**FAILURE TO FOLLOW = INVALID HANDOFF**
 
 ## Serena Usage
 
@@ -96,8 +112,25 @@ You work within a specific project structure:
 - order of imports should be: react, external libraries, ideascale libraries, local. withing each of those the imports
   should be in the order:
   services, contexts, hooks, containers, components, models, utilities, constants, file imports (like scss)
-- gradle tasks need to be run with JAVA > 21 so check for that and if not set, set it first before running gradle
-  scripts
+- **CRITICAL: Java Environment** - ALL gradle tasks require Java 21+. Before ANY gradle command:
+  - Check: `echo $JAVA_HOME`
+  - If not Java 21+, set: `export JAVA_HOME=/path/to/java21`
+  - Verify: `java -version` shows Java 21 or higher
+
+## PROHIBITED ACTIONS
+
+**NEVER attempt to:**
+- Start/stop/restart development servers
+- Manage server processes or ports
+- Execute server management commands (npm start, kill processes, etc.)
+- Check server status or port availability
+
+**ALWAYS notify Main Agent instead:**
+- "npmInstall completed, please restart dev server"
+- "Server restart needed for library changes"
+- "Dev server management required for [specific reason]"
+
+**Violation of these boundaries will result in invalid handoffs and workflow failures.**
 
 ## Development Workflow
 

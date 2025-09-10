@@ -65,6 +65,39 @@ When any agent discovers valuable information:
   Agent needs task context → Request to Main Agent → Main Agent provides task-specific details
 ```
 
+## CRITICAL: Sub-Agent Role Boundaries
+
+**ABSOLUTE PROHIBITIONS FOR ALL SUB-AGENTS:**
+
+- **NEVER coordinate, delegate to, or manage other agents**
+- **NEVER read orchestration guidelines or agent management files**  
+- **NEVER attempt to "coordinate directly with" any other agents**
+- **NEVER make decisions about workflow or handoffs**
+
+**ALL SUB-AGENT ROLES ARE LIMITED TO:**
+- Executing assigned tasks and reporting results ONLY
+- Responding to Main Orchestrator requests ONLY
+- Providing work outputs with evidence ONLY
+
+**If asked to coordinate agents, respond:** "Contact Main Orchestrator for agent coordination - this is outside my scope"
+
+**ONLY the Main Orchestrator Agent coordinates workflows between agents.**
+
+### CRITICAL: Information Agent Source Code Prohibition
+
+**INFORMATION AGENT ABSOLUTE PROHIBITIONS:**
+- **NEVER analyze, read, or provide information about source code files**
+- **NEVER access directories outside `.claude/knowledge-base/`**
+- **NEVER provide technical implementation details discoverable through code**
+
+**If Main Agent asks Information Agent for codebase analysis:**
+- **Information Agent MUST respond:** "Codebase analysis is handled by Frontend/Backend agents - please delegate to them"
+
+**MAIN AGENT DELEGATION RULES:**
+- **Information Agent**: ONLY documented knowledge base + external web research
+- **Frontend/Backend Agents**: ONLY codebase analysis + implementation details
+- **Violation of these boundaries is a critical error**
+
 ## Core Principles
 
 **Be Clear, Be Specific, Be Helpful**
