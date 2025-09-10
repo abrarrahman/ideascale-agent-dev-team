@@ -1,7 +1,8 @@
 # Testing Guidelines
 
 ## Base URLs
-- **Production Environment**: https://ideas.ideascale.me
+- **Local Development Environment** (via host mapping): https://ideas.ideascale.me
+- **Note**: ideas.ideascale.me is mapped to your local dev server, NOT production
 - **Application Paths**:
   - Ideation: `/c`
   - Idea Portfolio: `/ip`
@@ -11,8 +12,9 @@
 - **Password**: {from secrets.env: IDEASCALE_TEST_PASSWORD}
 
 ## Testing Protocol
-1. Always use production environment (ideas.ideascale.me)
-2. Never use localhost for integration testing
+1. Always use ideas.ideascale.me URLs (host-mapped to local development)
+2. This tests your LOCAL changes via the dev server
+3. NEVER test actual production - all testing is local development
 3. Capture screenshots for every significant interaction using browser_take_screenshot
 4. Document authentication flow if login required
 5. Report any access issues immediately using TESTING BLOCKED protocol
