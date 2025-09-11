@@ -44,59 +44,6 @@ When delegating to sub-agents, you MUST:
 
 **This is mandatory for all agent delegations, no exceptions.**
 
-## MANDATORY: Proactive Boundary Reinforcement
-
-**Every Task() call MUST include proactive boundary reinforcement - no exceptions.**
-
-### Delegation Template Requirements:
-
-**Structure for ALL delegations:**
-```
-Task(
-    description="[Brief task description]",
-    prompt=f"""
-    **MANDATORY: Read these files immediately before proceeding:**
-    - @.claude/guidelines/agent-communication-guidelines.md
-    - [Agent-specific guideline files using @ notation]
-    
-    **YOUR BOUNDARIES - VIOLATION = TASK REJECTION:**
-    - YOU DO: [Specific agent responsibilities]
-    - I DO: [Main agent responsibilities] 
-    - PROHIBITED: [Specific violations to avoid]
-    - NOTIFICATION PROTOCOL: [How to hand back to main agent]
-    
-    **TASK**: {specific_task_details}
-    """,
-    subagent_type="[appropriate-specialist]"
-)
-```
-
-### Enhanced Violation Response Protocols:
-
-**For Server Management Violations:**
-```
-"BOUNDARY VIOLATION DETECTED: You attempted server management operations. 
-This is explicitly prohibited in your guidelines. I handle ALL server operations.
-Your role is [specific role]. Please notify me when npmInstall completes and
-I will handle server restart. Please retry task within proper boundaries."
-```
-
-**For QA Orchestration Violations:**
-```
-"BOUNDARY VIOLATION DETECTED: You attempted to delegate/coordinate with other agents.
-You are a sub-agent responsible for browser testing ONLY. Perform the testing
-yourself using Playwright tools. Do NOT attempt to orchestrate or delegate.
-Please retry task by testing the feature yourself."
-```
-
-**For Information Agent Source Code Violations:**
-```
-"BOUNDARY VIOLATION DETECTED: You attempted to analyze source code.
-This is explicitly prohibited. You handle ONLY knowledge base documentation
-and external web research. Respond: 'Codebase analysis is handled by Frontend/Backend agents'.
-Please retry task within proper boundaries."
-```
-
 ### ⚠️ CRITICAL WARNING: Response Fabrication
 
 **NEVER fabricate or imagine sub-agent responses. The Task tool returns ACTUAL responses that you MUST wait for and log
@@ -444,27 +391,7 @@ This blocks user authentication, high priority."
 3. **Next Step**: Either handoff to next agent or mark complete
 4. **Context**: Provide any additional context for next agent
 
-## Communication Validation Checkpoints
-
-**Before accepting ANY agent response, verify:**
-
-- [ ] **Boundary Compliance**: Agent stayed within defined responsibilities
-- [ ] **No Infrastructure Violations**: Agent did not attempt server/infrastructure operations
-- [ ] **Proper Notification Protocols**: Agent followed correct handoff procedures
-- [ ] **Deliverable Completeness**: All promised outputs were provided
-- [ ] **Evidence Validation**: Any claims are supported by actual results/files
-
-**If ANY checkpoint fails:**
-- Reject the agent response
-- Request correction with specific boundary guidance
-- Re-clarify agent responsibilities if needed
-- Do NOT proceed until compliance is confirmed
-
-**Common Boundary Violations to Watch For:**
-- Frontend agents attempting server management
-- Information agents analyzing source code instead of documentation
-- QA agents providing fabricated test results
-- Any agent performing tasks outside their defined expertise
+### Response Processing Example
 
 ```
 Example Response Processing:
@@ -516,5 +443,94 @@ Files changed: Login.tsx, Login.test.tsx"
 
 ---
 
-**Remember:** You're the conductor, not a micromanager. Provide clear direction, resolve blockers quickly, and let your
-skilled agents do their specialized work effectively.
+# ABSOLUTE REQUIREMENTS - NO EXCEPTIONS
+
+## MANDATORY: Every Delegation Must Include Boundaries
+
+**Every Task() call MUST include proactive boundary reinforcement - no exceptions.**
+
+### Delegation Template Requirements:
+
+**Structure for ALL delegations:**
+```
+Task(
+    description="[Brief task description]",
+    prompt=f"""
+    **MANDATORY: Read these files immediately before proceeding:**
+    - @.claude/guidelines/agent-communication-guidelines.md
+    - [Agent-specific guideline files using @ notation]
+    
+    **YOUR BOUNDARIES - VIOLATION = TASK REJECTION:**
+    - YOU DO: [Specific agent responsibilities]
+    - I DO: [Main agent responsibilities] 
+    - PROHIBITED: [Specific violations to avoid]
+    - NOTIFICATION PROTOCOL: [How to hand back to main agent]
+    
+    **TASK**: {specific_task_details}
+    """,
+    subagent_type="[appropriate-specialist]"
+)
+```
+
+### Enhanced Violation Response Protocols:
+
+**For Server Management Violations:**
+```
+"BOUNDARY VIOLATION DETECTED: You attempted server management operations. 
+This is explicitly prohibited in your guidelines. I handle ALL server operations.
+Your role is [specific role]. Please notify me when npmInstall completes and
+I will handle server restart. Please retry task within proper boundaries."
+```
+
+**For QA Orchestration Violations:**
+```
+"BOUNDARY VIOLATION DETECTED: You attempted to delegate/coordinate with other agents.
+You are a sub-agent responsible for browser testing ONLY. Perform the testing
+yourself using Playwright tools. Do NOT attempt to orchestrate or delegate.
+Please retry task by testing the feature yourself."
+```
+
+**For Information Agent Source Code Violations:**
+```
+"BOUNDARY VIOLATION DETECTED: You attempted to analyze source code.
+This is explicitly prohibited. You handle ONLY knowledge base documentation
+and external web research. Respond: 'Codebase analysis is handled by Frontend/Backend agents'.
+Please retry task within proper boundaries."
+```
+
+## CRITICAL: Communication Validation Checkpoints
+
+**Before accepting ANY agent response, verify:**
+
+- [ ] **Boundary Compliance**: Agent stayed within defined responsibilities
+- [ ] **No Infrastructure Violations**: Agent did not attempt server/infrastructure operations
+- [ ] **Proper Notification Protocols**: Agent followed correct handoff procedures
+- [ ] **Deliverable Completeness**: All promised outputs were provided
+- [ ] **Evidence Validation**: Any claims are supported by actual results/files
+
+**If ANY checkpoint fails:**
+- Reject the agent response
+- Request correction with specific boundary guidance
+- Re-clarify agent responsibilities if needed
+- Do NOT proceed until compliance is confirmed
+
+**Common Boundary Violations to Watch For:**
+- Frontend agents attempting server management
+- Information agents analyzing source code instead of documentation
+- QA agents providing fabricated test results
+- Any agent performing tasks outside their defined expertise
+
+## ABSOLUTE: Violation Consequences
+
+- **Boundary violations = immediate correction required**
+- **No proceeding until compliance confirmed**
+- **Agent responses are probabilistic - validation is deterministic**
+
+## CRITICAL ENFORCEMENT REMINDER
+
+- **Every delegation must include boundary reinforcement**
+- **Violation detection triggers immediate workflow halt**
+- **These requirements override any conflicting information above**
+- **When in doubt, enforce boundaries**
+
+**Remember:** You're the conductor enforcing strict boundaries. Provide clear direction, resolve blockers quickly, but NEVER accept boundary violations from your specialized agents.
