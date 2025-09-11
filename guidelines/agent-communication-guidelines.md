@@ -1,87 +1,28 @@
-# Agent Communication Guidelines
+# Sub-Agent Communication Guidelines
 
-*Single source of truth for how agents communicate effectively in the multi-agent development system.*
+*Communication patterns for sub-agents in the multi-agent development system.*
 
-**For Sub-Agents:** Follow these patterns for clear communication
-**For Main Agent:** Reference the additional orchestration guide in your system prompt
+**YOU ARE A SPECIALIZED SUB-AGENT** - Follow these patterns for clear communication with the Main Orchestrator.
 
-## Communication Structure
+## CRITICAL: Your Role as a Sub-Agent
 
-### Main Agent Communications (Orchestration)
+**YOU ARE A SPECIALIZED SUB-AGENT - Your responsibilities are:**
 
-**Main Agent coordinates the workflow using these patterns:**
+- **Execute ONLY the specific task assigned to you**
+- **Report results back to Main Orchestrator ONLY**
+- **Provide work outputs with clear evidence**
+- **Request help from Main Orchestrator when blocked**
 
-```yaml
-# Task Delegation
-To: [ Agent ]
-Type: TASK_ASSIGNMENT
-Content:
-  - Task description
-  - Success criteria
-  - Context/constraints
-  - Dependencies (wait for X before starting)
-  - Expected deliverables
-
-# Status Requests  
-To: [ Agent ]
-Type: STATUS_REQUEST
-Expected Response: Current progress, blockers, ETA
-
-# Quality Gate Validation
-To: [ Agent ]
-Type: VALIDATION_REQUEST
-Content: Specific criteria to verify
-Expected Response: PASS/FAIL with evidence
-```
-
-### Orchestrator-Mediated Coordination
-
-**All agent coordination flows through the Main Agent:**
-
-```yaml
-# API Contract Sharing (Backend → Main Agent → Frontend)
-Type: CONTRACT_HANDOFF
-Flow: Backend completes API → Returns specs to Main Agent → Main Agent delegates to Frontend with specs
-
-# Test Collaboration (Development → Main Agent → QA)
-Type: TEST_COORDINATION
-Flow: Dev completes feature → Returns to Main Agent → Main Agent delegates testing with context
-
-# Knowledge Updates (Any Agent → Main Agent → Documentation)
-Type: KNOWLEDGE_CAPTURE
-Flow: Agent discovers pattern → Reports to Main Agent → Main Agent delegates documentation task
-```
-
-### Information Flow Rules
-
-```yaml
-# Information Discovery
-When any agent discovers valuable information:
-  → Report to Main Agent (for immediate task context)
-  → Main Agent delegates to Documentation Agent (for future knowledge capture)
-
-  # Context Requests
-  Agent needs context → Request via Main Agent → Main Agent queries Information Agent → Returns knowledge
-  Agent needs task context → Request to Main Agent → Main Agent provides task-specific details
-```
-
-## CRITICAL: Sub-Agent Role Boundaries
-
-**ABSOLUTE PROHIBITIONS FOR ALL SUB-AGENTS:**
+**ABSOLUTE PROHIBITIONS FOR YOU:**
 
 - **NEVER coordinate, delegate to, or manage other agents**
-- **NEVER read orchestration guidelines or agent management files**  
 - **NEVER attempt to "coordinate directly with" any other agents**
 - **NEVER make decisions about workflow or handoffs**
+- **NEVER assume orchestrator responsibilities**
 
-**ALL SUB-AGENT ROLES ARE LIMITED TO:**
-- Executing assigned tasks and reporting results ONLY
-- Responding to Main Orchestrator requests ONLY
-- Providing work outputs with evidence ONLY
+**If asked to coordinate with other agents, respond:** "Contact Main Orchestrator for agent coordination - this is outside my scope"
 
-**If asked to coordinate agents, respond:** "Contact Main Orchestrator for agent coordination - this is outside my scope"
-
-**ONLY the Main Orchestrator Agent coordinates workflows between agents.**
+**REMEMBER: ONLY the Main Orchestrator coordinates workflows between agents.**
 
 ### CRITICAL: Information Agent Source Code Prohibition
 
@@ -90,10 +31,10 @@ When any agent discovers valuable information:
 - **NEVER access directories outside `.claude/knowledge-base/`**
 - **NEVER provide technical implementation details discoverable through code**
 
-**If Main Agent asks Information Agent for codebase analysis:**
+**If Main Orchestrator asks Information Agent for codebase analysis:**
 - **Information Agent MUST respond:** "Codebase analysis is handled by Frontend/Backend agents - please delegate to them"
 
-**MAIN AGENT DELEGATION RULES:**
+**AGENT SPECIALIZATION BOUNDARIES:**
 - **Information Agent**: ONLY documented knowledge base + external web research
 - **Frontend/Backend Agents**: ONLY codebase analysis + implementation details
 - **Violation of these boundaries is a critical error**
@@ -109,33 +50,10 @@ When any agent discovers valuable information:
 
 ## Practical Communication Examples
 
-### Main Agent Task Delegation
+### API Contract Communication Example
 
 ```
-Type: TASK_ASSIGNMENT
-To: @frontend-agent
-
-BUG-4567 - Fix login button not calling API
-
-Success Criteria:
-- Button triggers POST /auth/login on click
-- Loading state shows during request  
-- Error messages display for failed attempts
-
-Context: Users report login button does nothing. Network tab shows no request.
-Dependencies: None (backend API already working)
-Deliverables: Fixed Login component + updated tests
-
-Priority: High (blocks user authentication)
-```
-
-### API Contract Communication Through Orchestrator
-
-```
-Type: CONTRACT_HANDOFF
-Backend Agent → Main Agent
-
-User Profile API Contract:
+USER-123 COMPLETE: User Profile API implementation finished
 
 GET /api/users/:id
 Response: {
@@ -154,16 +72,14 @@ Errors:
 - 401: Invalid token  
 - 500: Server error
 
-Ready for frontend integration via Main Agent handoff.
+Files: src/routes/users.js, tests/users.test.js
+Ready for @frontend-agent integration
 ```
 
-### Test Coordination Through Orchestrator
+### Test Information for QA Agent Example
 
 ```
-Type: TEST_COORDINATION  
-Frontend Agent → Main Agent → QA Agent
-
-Login Flow Testing:
+LOGIN-456 COMPLETE: Login component implementation finished
 
 Test Scenarios:
 1. Valid credentials -> successful login + redirect
@@ -182,16 +98,16 @@ Expected Behaviors:
 - Errors clear when user retypes
 - Session persists across page refresh
 
-Main Agent will relay any clarification needs.
+Files: src/components/Login.tsx, tests/Login.test.tsx
+Ready for @qa-agent validation
 ```
 
-### Knowledge Update Through Orchestrator
+### Knowledge Discovery Report Example
 
 ```
-Type: KNOWLEDGE_CAPTURE
-Frontend Agent → Main Agent → Documentation Agent
+BUG-4567 COMPLETE: Login error handling fixed
 
-New Discovery: Login Error Handling Pattern
+Discovery: Login Error Handling Pattern
 
 Context: While fixing BUG-4567, discovered effective pattern for form error handling.
 
@@ -202,12 +118,13 @@ Pattern:
 - Provide retry mechanism for network failures
 
 Files: src/components/Login.tsx, src/hooks/useFormValidation.ts
-Category: frontend/patterns/form-handling
+Knowledge Category: frontend/patterns/form-handling
 
-This pattern could be reused for signup, password reset, and profile editing forms.
+Note: This pattern could be reused for signup, password reset, and profile editing forms.
+Ready for @documentation-agent to capture in knowledge base.
 ```
 
-## Status Reporting (Sub-Agent -> Main Agent)
+## Status Reporting (How You Report to Main Orchestrator)
 
 ```
 Type: STATUS_UPDATE or TASK_COMPLETE
@@ -237,26 +154,12 @@ Include:
 ### Context Discovery
 
 ```
-Type: CONTEXT_REQUEST
-Agent → Main Agent → Information Agent
+"BUG-4567 NEED CONTEXT: Working on login button issue.
 
-"Need context on user authentication patterns in the codebase.
-Working on BUG-4567 - login button issue.
-Specifically looking for: existing auth components, API patterns, error handling approaches."
+Need information on: existing auth components, API patterns, error handling approaches.
+Specifically looking for patterns in the knowledge base that might help with this implementation."
 
-Expected Response: Relevant documentation, code examples, established patterns
-```
-
-### Task Context
-
-```
-Type: STATUS_REQUEST
-Main Agent -> Sub-Agent
-
-"@frontend-agent: Status check on BUG-4567 - login button fix.
-Need: Current progress, any blockers, estimated completion."
-
-Expected Response: Progress update, blockers if any, next steps
+Expected: Main Orchestrator will provide relevant context or delegate to Information Agent.
 ```
 
 ## Error Reporting and Escalation
@@ -289,22 +192,7 @@ Files: src/types/User.ts - missing import for UserPreferences type"
 
 ## Quality Gates and Validation
 
-### Validation Requests (Main Agent -> Sub-Agent)
-
-```
-Type: VALIDATION_REQUEST
-Content: Specific criteria to verify
-
-"@qa-agent: Validate BUG-4567 fix - login functionality
-Criteria:
-- Login button triggers network request
-- Loading spinner appears during request  
-- Error messages show for invalid credentials
-- No regression on successful login flow
-Expected Response: PASS/FAIL with test evidence"
-```
-
-### Validation Responses (Sub-Agent -> Main Agent)
+### Validation Responses (How You Report Test Results)
 
 ```
 Type: VALIDATION_COMPLETE
@@ -324,9 +212,11 @@ Cross-browser tested: Chrome, Firefox, Safari"
 Need: Specific error messages + proper error state management"
 ```
 
-## Agent Addressing and Handoffs
+## Agent References and Handoffs
 
-**Agent References:** Use @agent-name to signal handoff needs to the orchestrator
+**How to signal handoff needs to Main Orchestrator:**
+
+Use @agent-name to indicate which agent should work next:
 
 - `@qa-agent` - testing and validation
 - `@git-agent` - version control operations
@@ -335,18 +225,18 @@ Need: Specific error messages + proper error state management"
 - `@information-agent` - context and research
 - `@documentation-agent` - knowledge base updates
 
-**Handoff Patterns:**
+**Handoff Examples:**
 
 ```
-Ready Handoffs:
-"Ready for @qa-agent" - signals orchestrator to delegate testing
-"@backend-agent ready for integration" - signals orchestrator that API is ready for frontend handoff
-"Hand to @git-agent for deployment" - signals orchestrator to initiate release process
+Ready for Next Agent:
+"Ready for @qa-agent" - signals that your work is complete and ready for testing
+"Ready for @frontend-agent integration" - signals that API is ready for frontend work
+"Ready for @git-agent for deployment" - signals that work is ready for release
 
-Dependency Handoffs:  
-"Need @backend-agent to create API first" - signals orchestrator about blocking dependency
-"Waiting for @information-agent context on auth patterns" - signals orchestrator about info need
-"@qa-agent should review approach before implementation" - signals orchestrator for validation
+Dependency Requests:  
+"Need @backend-agent to create API first" - signals a blocking dependency
+"Need @information-agent context on auth patterns" - signals need for information
+"Need @qa-agent to review approach before implementation" - signals need for validation
 ```
 
 ## Information Sharing Best Practices
