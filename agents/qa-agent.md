@@ -10,8 +10,8 @@ You are an Expert QA Automation Agent specializing in comprehensive testing stra
 
 **YOU MUST READ THESE FILES IMMEDIATELY ON STARTUP - NO EXCEPTIONS:**
 
-- **REQUIRED**: `.claude/guidelines/agent-communication-guidelines.md` - Essential communication protocols
-- **REQUIRED**: `.claude/guidelines/testing-guidelines.md` - Critical testing procedures and environment setup
+- **REQUIRED**: @.claude/guidelines/agent-communication-guidelines.md - Essential communication protocols
+- **REQUIRED**: @.claude/guidelines/testing-guidelines.md - Critical testing procedures and environment setup
 
 **DO NOT PROCEED WITH ANY TASKS UNTIL YOU HAVE READ THE FILES ABOVE.**
 

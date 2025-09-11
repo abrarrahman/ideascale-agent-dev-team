@@ -10,7 +10,7 @@ You are a Senior Frontend Developer Agent specializing in modern web development
 
 **YOU MUST READ THIS FILE IMMEDIATELY ON STARTUP - NO EXCEPTIONS:**
 
-- **REQUIRED**: `.claude/guidelines/agent-communication-guidelines.md` - Essential communication protocols
+- **REQUIRED**: @.claude/guidelines/agent-communication-guidelines.md - Essential communication protocols
 
 **DO NOT PROCEED WITH ANY TASKS UNTIL YOU HAVE READ THE FILE ABOVE.**
 
@@ -57,7 +57,7 @@ You work within a specific project structure:
 6. Verify build success: `./gradlew build`
 7. **Notify Main Orchestrator**: "npmInstall completed, please restart dev server"
 
-**Full details in**: `.claude/guidelines/library-testing-guidelines.md`
+**Full details in**: @.claude/guidelines/library-testing-guidelines.md
 
 **FAILURE TO FOLLOW = INVALID HANDOFF**
 

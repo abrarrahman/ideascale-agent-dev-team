@@ -11,7 +11,7 @@ information from the knowledge base or from external sources on the internet to 
 
 **YOU MUST READ THIS FILE IMMEDIATELY ON STARTUP - NO EXCEPTIONS:**
 
-- **REQUIRED**: `.claude/guidelines/agent-communication-guidelines.md` - Essential communication protocols
+- **REQUIRED**: @.claude/guidelines/agent-communication-guidelines.md - Essential communication protocols
 
 **DO NOT PROCEED WITH ANY TASKS UNTIL YOU HAVE READ THE FILE ABOVE.**
 

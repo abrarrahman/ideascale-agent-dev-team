@@ -12,10 +12,15 @@ When delegating to sub-agents, you MUST:
 
 1. **Log the full instructions sent to the sub-agent** in a clearly marked section
 2. **Log the complete response received from the sub-agent** when it completes
-3. Use this standardized format:
+3. **Log boundary compliance validation** for every response
+4. **Log any violation corrections** sent back to agents
+5. Use this standardized format:
 
 ```
 ## Sub-Agent Interaction Log
+
+**Boundary Reinforcement Sent to [Agent Type]:**
+[Copy of the mandatory boundary reminder included in the prompt]
 
 **Instructions sent to [Agent Type]:**
 [Full prompt/instructions provided to the sub-agent]
@@ -23,11 +28,74 @@ When delegating to sub-agents, you MUST:
 **Response received from [Agent Type]:**
 [Complete response/report from the sub-agent]
 
+**Boundary Compliance Check:**
+- [ ] Agent stayed within defined responsibilities
+- [ ] No infrastructure violations (server management, etc.)
+- [ ] Proper notification protocols followed
+- [ ] No orchestration attempts by sub-agents
+- [ ] Evidence provided for all claims
+
+**Violation Response (if any):**
+[Any boundary violation corrections sent back to agent]
+
 **Next Actions:**
 [What the main agent will do based on this response]
 ```
 
 **This is mandatory for all agent delegations, no exceptions.**
+
+## MANDATORY: Proactive Boundary Reinforcement
+
+**Every Task() call MUST include proactive boundary reinforcement - no exceptions.**
+
+### Delegation Template Requirements:
+
+**Structure for ALL delegations:**
+```
+Task(
+    description="[Brief task description]",
+    prompt=f"""
+    **MANDATORY: Read these files immediately before proceeding:**
+    - @.claude/guidelines/agent-communication-guidelines.md
+    - [Agent-specific guideline files using @ notation]
+    
+    **YOUR BOUNDARIES - VIOLATION = TASK REJECTION:**
+    - YOU DO: [Specific agent responsibilities]
+    - I DO: [Main agent responsibilities] 
+    - PROHIBITED: [Specific violations to avoid]
+    - NOTIFICATION PROTOCOL: [How to hand back to main agent]
+    
+    **TASK**: {specific_task_details}
+    """,
+    subagent_type="[appropriate-specialist]"
+)
+```
+
+### Enhanced Violation Response Protocols:
+
+**For Server Management Violations:**
+```
+"BOUNDARY VIOLATION DETECTED: You attempted server management operations. 
+This is explicitly prohibited in your guidelines. I handle ALL server operations.
+Your role is [specific role]. Please notify me when npmInstall completes and
+I will handle server restart. Please retry task within proper boundaries."
+```
+
+**For QA Orchestration Violations:**
+```
+"BOUNDARY VIOLATION DETECTED: You attempted to delegate/coordinate with other agents.
+You are a sub-agent responsible for browser testing ONLY. Perform the testing
+yourself using Playwright tools. Do NOT attempt to orchestrate or delegate.
+Please retry task by testing the feature yourself."
+```
+
+**For Information Agent Source Code Violations:**
+```
+"BOUNDARY VIOLATION DETECTED: You attempted to analyze source code.
+This is explicitly prohibited. You handle ONLY knowledge base documentation
+and external web research. Respond: 'Codebase analysis is handled by Frontend/Backend agents'.
+Please retry task within proper boundaries."
+```
 
 ### ⚠️ CRITICAL WARNING: Response Fabrication
 
